@@ -5,6 +5,66 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
+
+int get_argument_config_count (argument_config_t* arg_config) {
+    if (arg_config) {
+        return arg_config->argument_count;
+    }
+    return 0;
+}
+
+static argument_option_t* new_argument_option (const char* arg_option_str, const char* arg_description_str, arg_type_t arg_type) {
+    argument_option_t* arg_option = (argument_option_t*) malloc (sizeof (argument_option_t));
+    arg_option->argument_description_str = arg_description_str;
+    arg_option->argument_option_str = arg_option_str;
+    arg_option->argument_type = arg_type;
+    return arg_option;
+}
+
+
+argument_config_t* new_arg_config (void) {
+    argument_config_t* arg_config = (argument_config_t*) malloc (sizeof (argument_config_t));
+    vector_init (&arg_config->argument_options_vec);
+    arg_config->argument_count = vector_get_size (arg_config->argument_options_vec);
+    return arg_config;
+}
+
+argument_config_t* new_arg_config_with_size (int size) {
+    argument_config_t* arg_config = (argument_config_t*) malloc (sizeof (argument_config_t));
+    vector_init_with_capacity (&arg_config->argument_options_vec, size);
+    arg_config->argument_count = vector_get_size (arg_config->argument_options_vec);
+    return arg_config;
+}
+
+
+void add_boolean_argument_config (argument_config_t* arg_config, const char* arg_option_str, const char* arg_description_str) {
+   argument_option_t* arg_option = new_argument_option (arg_option_str, arg_description_str, BOOLEAN_FLAG);
+   vector_add (&arg_config->argument_options_vec, arg_option);
+   arg_config->argument_count = vector_get_size (arg_config->argument_options_vec);
+}
+
+void add_string_argument_config (argument_config_t* arg_config, const char* arg_option_str, const char* arg_description_str) {
+    argument_option_t* arg_option = new_argument_option (arg_option_str, arg_description_str, STRING_VAL);
+    vector_add (&arg_config->argument_options_vec, arg_option);
+    arg_config->argument_count = vector_get_size (arg_config->argument_options_vec);
+}
+
+void populate_help_msg_string (argument_config_t* argument_config) {
+    if (argument_config && argument_config->argument_count > 0) {
+        char* help_msg_str = NULL;
+        int help_msg_str_size = 0;
+        int argument_options_count = vector_get_size (argument_config->argument_options_vec);
+        for (int index = 0; index < argument_options_count; index++) {
+            argument_option_t* argument_option = vector_get_element (argument_config->argument_options_vec, index);
+            help_msg_str_size += strlen (argument_option->argument_option_str) + 2;
+            help_msg_str_size += strlen (argument_option->argument_description_str);
+        }
+        help_msg_str = (char*) malloc (sizeof(char*) * help_msg_str_size);
+        argument_config->help_string = help_msg_str;
+    }
+}
+
 
 /**
  * @param args_list list of strings containing argument options

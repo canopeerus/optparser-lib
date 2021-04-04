@@ -5,15 +5,9 @@
 #include<stdio.h>
 
 int main (int argc, char **argv) {
-    bool flag = matches_arg_boolean(argv, argc, "flag");
-    if (flag) {
-        printf("Truyeee");
-    } else {
-        printf("faloseee");
-    }
-    const char *arg = set_arg_string(argv, argc, "string-flag");
-    if (arg != NULL) {
-        printf("%s\n", arg);
-    }
-    return 0;
+   argument_config_t* arg_config = new_arg_config();
+   printf ("argument config initialized\n");
+   printf ("Size of args: %d\n", arg_config->argument_count);
+   add_string_argument_config (arg_config, "TEST", "A simple test argument");
+   return 0;
 }

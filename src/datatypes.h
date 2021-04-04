@@ -12,9 +12,16 @@ typedef enum {
     NUMERIC_VAL
 } arg_type_t;
 
-typedef struct {
+typedef struct argument_option {
+    const char* argument_option_str;
+    const char* argument_description_str;
+    arg_type_t argument_type;
+} argument_option_t;
+
+typedef struct argument_config {
     const char* help_string;
-    size_t argument_count;
-} argument_config;
+    int argument_count;
+    vector_t argument_options_vec;
+} argument_config_t;
 
 #endif
