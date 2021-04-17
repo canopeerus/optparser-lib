@@ -5,37 +5,28 @@
 #include <stdlib.h>
 #include "datatypes.h"
 
-argument_config_t* new_arg_config (void);
+arg_config_t* new_arg_config (void);
 
-argument_config_t* new_arg_config_with_size (int);
+arg_config_t* new_arg_config_with_size (int);
 
-static argument_option_t* new_argument_option (const char*, const char*, arg_type_t);
+static arg_option_t* new_arg_option (const char*, const char*, arg_type_t);
 
-void argument_config_add_opt (argument_config_t* config, argument_option_t arg_option);
+void arg_config_add_opt (arg_config_t*, arg_option_t);
 
-void populate_help_msg_string (argument_config_t* config);
+void populate_help_msg_string (arg_config_t*);
 
-void add_boolean_argument_config (argument_config_t* config, const char* arg_option_str, const char* arg_description_str);
+void add_new_bool_arg (arg_config_t*, const char*, const char*);
 
-void add_string_argument_config (argument_config_t* config, const char* arg_option_str, const char* arg_description_str);
+void add_new_string_arg (arg_config_t*, const char*, const char*);
 
-int get_argument_config_count (argument_config_t* config);
+void arg_config_cleanup (arg_config_t*);
 
-/** 
- * Returns true if supplied argument option is present args list 
- * @param args_list a list of strings.
- * @param arg_count an integer argument indicating number of strings in `args_list`
- * @param arg_option a const character pointer storing the argument option to match
- * @return boolean flag.
- */
+void add_new_bool_arg_fn_ptr (arg_config_t*, const char*, const char*, void (bool*));
+
+int get_arg_config_count (arg_config_t*);
+
 bool matches_arg_boolean (char **args_list, int arg_count, const char *arg_option);
 
-/** 
- * Returns a string (char pointer) containing the argument value matching to the argument option
- * @param[in]args_list a list of strings
- * @param[in]arg_count number of argument options in args_list
- * @param[in]arg_option argument option string to match
- * Returns argument value matching to the arg option supplied in `arg_option` */
 const char* set_arg_string (char **args_list, int arg_count, const char *arg_option);
 
 #endif
