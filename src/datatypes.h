@@ -1,27 +1,51 @@
 #ifndef DATATYPES_H
 #define DATATYPES_H
 
-#include <stdbool.h>
-#include <stdlib.h>
+#include <string>
+#include <vector>
+#include <unordered_set>
 
-#include "vector.h"
+namespace optparser {
+    typedef enum {
+        INFILE_PATH,
+        SIMPLE_VAL,
+        FLAG
+    } ArgumentType;
 
-typedef enum {
-    BOOLEAN_FLAG,
-    STRING_VAL,
-    NUMERIC_VAL
-} arg_type_t;
+    class ArgumentOption {
+        std::string argOptStr;
+        std::string argOptDescStr;
+        ArgumentType argumentType;
 
-typedef struct argument_option {
-    const char* argument_option_str;
-    const char* argument_description_str;
-    arg_type_t argument_type;
-} arg_option_t;
+        public:
+        std::string getArgOptStr(void);
+        std::string getArgDescStr(void);
+        ArgumentType getArgumentType(void);
+        void setArgOptStr(std::string argOptStr);
+        void setArgDescStr(std::string argDescStr);
+        void setArgumentType(ArgumentType argType);
+    };
 
-typedef struct argument_config {
-    const char* help_string;
-    int argument_count;
-    vector_t argument_options_vec;
-} arg_config_t;
+    class ArgumentCommand {
+        std::string argCmdStr;
+        std::string argCmdDescStr;
+        std::unordered_set<ArgumentOption> argOptions;
 
+        public:
+        std::string getArgCmdStr(void);
+        std::string getArgCmdDescStr(void);
+        std::unordered_set<ArgumentOption> getArgOptions(void);
+        void setArgCmdStr(std::string argCmdStr);
+        void setArgCmdDescStr(std::string argCmdDescStr);
+        void insertArgOption(ArgumentOption argOption);
+    };
+
+    class ArgumentConfig {
+        std::unordered_set<ArgumentCommand> argCommands;
+        public:
+        ArgumentConfig(ArgumentCommand argCommand);
+        std::unordered_set<ArgumentCommand> getArgCommands(void);
+        void insertArgCommand(ArgumentCommand argCommand);
+    };              
+}
 #endif

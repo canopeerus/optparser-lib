@@ -5,6 +5,10 @@
 #include <stdlib.h>
 #include "datatypes.h"
 
+namespace optparser {
+    
+}
+
 arg_config_t* new_arg_config (void);
 
 arg_config_t* new_arg_config_with_size (int);
