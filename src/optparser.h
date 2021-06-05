@@ -5,10 +5,12 @@
 #include <stdlib.h>
 #include "datatypes.h"
 
-namespace optparser {
-    
-}
+namespace optparser { 
 
+    void addNewArgCommand(ArgumentConfig& argConfig, std::string cmdStr, std::string cmdDescStr);
+
+}
+/*
 arg_config_t* new_arg_config (void);
 
 arg_config_t* new_arg_config_with_size (int);
@@ -32,5 +34,5 @@ int get_arg_config_count (arg_config_t*);
 bool matches_arg_boolean (char **args_list, int arg_count, const char *arg_option);
 
 const char* set_arg_string (char **args_list, int arg_count, const char *arg_option);
-
+*/
 #endif
