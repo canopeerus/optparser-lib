@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-#include <unordered_set>
+#include <unordered_map>
 
 namespace optparser {
     typedef enum {
@@ -30,26 +30,27 @@ namespace optparser {
     class ArgumentCommand {
         std::string argCmdStr;
         std::string argCmdDescStr;
-        std::unordered_set<ArgumentOption> argOptions;
+        std::unordered_map<std::string, ArgumentOption> argumentOptions;
 
         public:
-        ArgumentCommand(std::string argCmdStr, std::string argCmdDescStr);
         ArgumentCommand(std::string argCmdStr, std::string argCmdDescStr, ArgumentOption argOption);
         std::string getArgCmdStr(void);
         std::string getArgCmdDescStr(void);
-        std::unordered_set<ArgumentOption> getArgOptions(void);
+        std::unordered_map<std::string, ArgumentOption> getArgOptions(void);
         void setArgCmdStr(std::string argCmdStr);
         void setArgCmdDescStr(std::string argCmdDescStr);
         void insertArgOption(ArgumentOption argOption);
     };
 
     class ArgumentConfig {
-        std::unordered_set<ArgumentCommand> argCommands;
+        std::unordered_map<std::string, ArgumentCommand> argCommands;
         std::string progName;
+
         public:
-        ArgumentConfig(ArgumentCommand argCommand);
+        ArgumentConfig(std::string progName, ArgumentCommand argCommand);
         ArgumentConfig(std::string progName);
-        std::unordered_set<ArgumentCommand> getArgCommands(void);
+        std::unordered_map<std::string, ArgumentCommand> getArgCommands(void);
+        std::string getProgName(void);
         void insertArgCommand(ArgumentCommand argCommand);
     };              
 }

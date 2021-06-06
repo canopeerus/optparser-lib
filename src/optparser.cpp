@@ -2,6 +2,11 @@
 #include "optparser.h"
 #endif
 
+optparser::ArgumentConfig optparser::newArgumentConfig(std::string progName) {
+    optparser::ArgumentConfig argConfig(progName);
+    return argConfig;
+}
+
 // int get_argument_config_count (arg_config_t* arg_config) {
 //     if (arg_config) {
 //         return arg_config->argument_count;

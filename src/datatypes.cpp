@@ -1,34 +1,33 @@
 #include "datatypes.h"
 #include <string>
-#include <unordered_set>
+#include <unordered_map>
 
 /**
  * ArgumentOption
  */
 optparser::ArgumentOption::ArgumentOption(std::string argOptStr, std::string argOptDescStr, optparser::ArgumentType argType) {
-    this->argOptStr = argOptStr;
     this->argOptDescStr = argOptDescStr;
     this->argumentType = argType;
-}
-
-std::string optparser::ArgumentOption::getArgDescStr(void) {
-    return this->argOptDescStr;
 }
 
 std::string optparser::ArgumentOption::getArgOptStr(void) {
     return this->argOptStr;
 }
 
+std::string optparser::ArgumentOption::getArgDescStr(void) {
+    return this->argOptDescStr;
+}
+
 optparser::ArgumentType optparser::ArgumentOption::getArgumentType(void) {
     return this->argumentType;
 }
 
-void optparser::ArgumentOption::setArgDescStr(std::string argOptDescStr) {
-    this->argOptDescStr = argOptDescStr;
-}
-
 void optparser::ArgumentOption::setArgOptStr(std::string argOptStr) {
     this->argOptStr = argOptStr;
+}
+
+void optparser::ArgumentOption::setArgDescStr(std::string argOptDescStr) {
+    this->argOptDescStr = argOptDescStr;
 }
 
 void optparser::ArgumentOption::setArgumentType(optparser::ArgumentType argType) {
@@ -38,15 +37,10 @@ void optparser::ArgumentOption::setArgumentType(optparser::ArgumentType argType)
 /**
  * ArgumentCommand
  */ 
-optparser::ArgumentCommand::ArgumentCommand(std::string argCmdStr, std::string argCmdDescStr) {
-    this->argCmdDescStr = argCmdDescStr;
-    this->argCmdStr = argCmdStr;
-}
-
 optparser::ArgumentCommand::ArgumentCommand(std::string argCmdStr, std::string argCmdDescStr, optparser::ArgumentOption argOption) {
-    this->argCmdDescStr = argCmdDescStr;
     this->argCmdStr = argCmdStr;
-    this->argOptions.insert(argOption);
+    this->argCmdDescStr = argCmdDescStr;
+    this->argumentOptions.insert({ argOption.getArgOptStr(), argOption });
 }
 
 std::string optparser::ArgumentCommand::getArgCmdDescStr(void) {
@@ -57,8 +51,8 @@ std::string optparser::ArgumentCommand::getArgCmdStr(void) {
     return this->argCmdStr;
 }
 
-std::unordered_set<optparser::ArgumentOption> optparser::ArgumentCommand::getArgOptions(void) {
-    return this->argOptions;
+std::unordered_map<std::string, optparser::ArgumentOption> optparser::ArgumentCommand::getArgOptions(void) {
+    return this->argumentOptions;
 }
 
 void optparser::ArgumentCommand::setArgCmdDescStr(std::string argCmdDescStr) {
@@ -70,7 +64,7 @@ void optparser::ArgumentCommand::setArgCmdStr(std::string argCmdStr) {
 }
 
 void optparser::ArgumentCommand::insertArgOption(optparser::ArgumentOption argOption) {
-    this->argOptions.insert(argOption);
+    this->argumentOptions.insert({argOption.getArgOptStr(), argOption});
 }
 
 /**
@@ -81,10 +75,19 @@ optparser::ArgumentConfig::ArgumentConfig(std::string progName) {
     this->progName = progName;
 }
 
-std::unordered_set<optparser::ArgumentCommand> optparser::ArgumentConfig::getArgCommands(void) {
+optparser::ArgumentConfig::ArgumentConfig(std::string progName, optparser::ArgumentCommand argCommand) {
+    this->progName = progName;
+    this->argCommands.insert({argCommand.getArgCmdStr(), argCommand});
+}
+
+std::string optparser::ArgumentConfig::getProgName(void) {
+    return this->progName;
+}
+
+std::unordered_map<std::string, optparser::ArgumentCommand> optparser::ArgumentConfig::getArgCommands(void) {
     return this->argCommands;
 }
 
 void optparser::ArgumentConfig::insertArgCommand(optparser::ArgumentCommand argCommand) {
-    this->argCommands.insert(argCommand);
+    this->argCommands.insert({argCommand.getArgCmdStr(), argCommand});
 }

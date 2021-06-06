@@ -9,6 +9,7 @@ namespace optparser {
 
     void addNewArgCommand(ArgumentConfig& argConfig, std::string cmdStr, std::string cmdDescStr);
 
+    ArgumentConfig newArgumentConfig(std::string progName);
 }
 /*
 arg_config_t* new_arg_config (void);
