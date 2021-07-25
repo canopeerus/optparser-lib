@@ -3,7 +3,7 @@
 include config.mk
 
 all : ${ALL}
-	${CC} ${CFLAGS} ${ALL} -o ${OUT}
+	${CC} ${CXXFLAGS} ${ALL} -o ${OUT} ${LDFLAGS}
 
 docs:
 	doxygen doxygen-config

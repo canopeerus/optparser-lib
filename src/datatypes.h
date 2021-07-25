@@ -34,6 +34,7 @@ namespace optparser {
 
         public:
         ArgumentCommand(std::string argCmdStr, std::string argCmdDescStr, ArgumentOption argOption);
+        ArgumentCommand(std::string argCmdStr, std::string argCmdDescStr);
         std::string getArgCmdStr(void);
         std::string getArgCmdDescStr(void);
         std::unordered_map<std::string, ArgumentOption> getArgOptions(void);
@@ -52,6 +53,7 @@ namespace optparser {
         std::unordered_map<std::string, ArgumentCommand> getArgCommands(void);
         std::string getProgName(void);
         void insertArgCommand(ArgumentCommand argCommand);
+        void insertOptionToCmd(std::string argCmdStr, ArgumentOption argOption);
     };              
 }
 #endif

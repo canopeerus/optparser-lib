@@ -7,6 +7,16 @@ optparser::ArgumentConfig optparser::newArgumentConfig(std::string progName) {
     return argConfig;
 }
 
+void optparser::addNewArgCommand(optparser::ArgumentConfig& argConfig, std::string cmdStr, std::string cmdDescStr) {
+    optparser::ArgumentCommand argCommand(cmdStr, cmdDescStr);
+    argConfig.insertArgCommand(argCommand);
+}
+
+void optparser::addNewOptionToCommand(optparser::ArgumentConfig& argConfig, std::string cmdStr, std::string optStr, std::string optDescStr, optparser::ArgumentType argType) {
+    optparser::ArgumentOption argOption(optStr, optDescStr, argType);
+    argConfig.insertOptionToCmd(cmdStr, argOption);
+}
+
 // int get_argument_config_count (arg_config_t* arg_config) {
 //     if (arg_config) {
 //         return arg_config->argument_count;

@@ -1,6 +1,11 @@
 #include "datatypes.h"
 #include <string>
 #include <unordered_map>
+#include <utility>
+#include <functional>
+
+#define ARG_CMD_PAIR std::make_pair
+#define ARG_OPT_PAIR std::make_pair
 
 /**
  * ArgumentOption
@@ -8,6 +13,7 @@
 optparser::ArgumentOption::ArgumentOption(std::string argOptStr, std::string argOptDescStr, optparser::ArgumentType argType) {
     this->argOptDescStr = argOptDescStr;
     this->argumentType = argType;
+    this->argOptStr = argOptStr;
 }
 
 std::string optparser::ArgumentOption::getArgOptStr(void) {
@@ -40,7 +46,13 @@ void optparser::ArgumentOption::setArgumentType(optparser::ArgumentType argType)
 optparser::ArgumentCommand::ArgumentCommand(std::string argCmdStr, std::string argCmdDescStr, optparser::ArgumentOption argOption) {
     this->argCmdStr = argCmdStr;
     this->argCmdDescStr = argCmdDescStr;
-    this->argumentOptions.insert({ argOption.getArgOptStr(), argOption });
+    this->argumentOptions.insert(
+        ARG_OPT_PAIR(argOption.getArgOptStr(), argOption));
+}
+
+optparser::ArgumentCommand::ArgumentCommand(std::string argCmdStr, std::string argCmdDescStr) {
+    this->argCmdStr = argCmdStr;
+    this->argCmdDescStr = argCmdDescStr;
 }
 
 std::string optparser::ArgumentCommand::getArgCmdDescStr(void) {
@@ -64,7 +76,7 @@ void optparser::ArgumentCommand::setArgCmdStr(std::string argCmdStr) {
 }
 
 void optparser::ArgumentCommand::insertArgOption(optparser::ArgumentOption argOption) {
-    this->argumentOptions.insert({argOption.getArgOptStr(), argOption});
+    this->argumentOptions.insert(ARG_OPT_PAIR(argOption.getArgOptStr(), argOption));
 }
 
 /**
@@ -77,7 +89,7 @@ optparser::ArgumentConfig::ArgumentConfig(std::string progName) {
 
 optparser::ArgumentConfig::ArgumentConfig(std::string progName, optparser::ArgumentCommand argCommand) {
     this->progName = progName;
-    this->argCommands.insert({argCommand.getArgCmdStr(), argCommand});
+    this->argCommands.insert(ARG_CMD_PAIR(argCommand.getArgCmdStr(), argCommand));
 }
 
 std::string optparser::ArgumentConfig::getProgName(void) {
@@ -89,5 +101,13 @@ std::unordered_map<std::string, optparser::ArgumentCommand> optparser::ArgumentC
 }
 
 void optparser::ArgumentConfig::insertArgCommand(optparser::ArgumentCommand argCommand) {
-    this->argCommands.insert({argCommand.getArgCmdStr(), argCommand});
+    this->argCommands.insert(
+        ARG_CMD_PAIR(argCommand.getArgCmdStr(), argCommand));
+}
+
+void optparser::ArgumentConfig::insertOptionToCmd(std::string cmdStr, optparser::ArgumentOption argOption) {
+   auto matchedArgCmd = this->argCommands.find(cmdStr);
+   if (matchedArgCmd != this->argCommands.end()) {
+       matchedArgCmd->second.insertArgOption(argOption);
+   }
 }
