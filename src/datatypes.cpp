@@ -1,12 +1,10 @@
 #include "datatypes.h"
 #include <string>
 #include <unordered_map>
-#include <utility>
-#include <functional>
+// #include <utility>
 
-#define ARG_CMD_PAIR std::make_pair
-#define ARG_OPT_PAIR std::make_pair
-
+#define ARG_CMD_PAIR std::pair<std::string, optparser::ArgumentCommand>
+#define ARG_OPT_PAIR std::pair<std::string, optparser::ArgumentOption>
 /**
  * ArgumentOption
  */
@@ -46,8 +44,7 @@ void optparser::ArgumentOption::setArgumentType(optparser::ArgumentType argType)
 optparser::ArgumentCommand::ArgumentCommand(std::string argCmdStr, std::string argCmdDescStr, optparser::ArgumentOption argOption) {
     this->argCmdStr = argCmdStr;
     this->argCmdDescStr = argCmdDescStr;
-    this->argumentOptions.insert(
-        ARG_OPT_PAIR(argOption.getArgOptStr(), argOption));
+    this->argumentOptions.insert(ARG_OPT_PAIR(argOption.getArgOptStr(), argOption));
 }
 
 optparser::ArgumentCommand::ArgumentCommand(std::string argCmdStr, std::string argCmdDescStr) {
@@ -89,6 +86,7 @@ optparser::ArgumentConfig::ArgumentConfig(std::string progName) {
 
 optparser::ArgumentConfig::ArgumentConfig(std::string progName, optparser::ArgumentCommand argCommand) {
     this->progName = progName;
+    std::pair<std::string, optparser::ArgumentCommand> argCmdPair{argCommand.getArgCmdStr(), argCommand};
     this->argCommands.insert(ARG_CMD_PAIR(argCommand.getArgCmdStr(), argCommand));
 }
 
@@ -101,8 +99,7 @@ std::unordered_map<std::string, optparser::ArgumentCommand> optparser::ArgumentC
 }
 
 void optparser::ArgumentConfig::insertArgCommand(optparser::ArgumentCommand argCommand) {
-    this->argCommands.insert(
-        ARG_CMD_PAIR(argCommand.getArgCmdStr(), argCommand));
+    this->argCommands.insert(ARG_CMD_PAIR(argCommand.getArgCmdStr(), argCommand));
 }
 
 void optparser::ArgumentConfig::insertOptionToCmd(std::string cmdStr, optparser::ArgumentOption argOption) {
