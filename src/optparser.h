@@ -3,7 +3,8 @@
 
 #include <stdbool.h>
 #include <stdlib.h>
-#include "datatypes.h"
+
+#include "shapes/ArgumentConfig.h"
 
 namespace optparser { 
 
